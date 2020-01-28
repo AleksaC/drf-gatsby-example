@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  db:
+    image: mdillon/postgis:10
+    environment:
+      - POSTGRES_HOST=db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./backend/sql/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+    restart: on-failure
+
+  backend:
+    build: backend
+    image: backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    restart: on-failure
+
+  migration:
+    build: backend
+    image: backend
+    command: python manage.py migrate
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+      - backend
+
+  frontend:
+    build: frontend
+    image: frontend
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - backend
+
+volumes:
+  db-data:
