@@ -34,11 +34,13 @@ services:
   frontend:
     build: frontend
     image: frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     ports:
       - "8000:8000"
-    volumes:
-      - /app/node_modules
-      - ./frontend/:/app
+    depends_on:
+      - backend
 
 volumes:
   db-data:
