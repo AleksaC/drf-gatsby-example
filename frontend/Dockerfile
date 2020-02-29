@@ -1,6 +1,6 @@
 FROM node:12-buster
 
-RUN npm install --global gatsby-cli
+RUN npm install --global gatsby-cli && gatsby telemetry --disable
 
 WORKDIR /app
 
@@ -12,4 +12,5 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["gatsby", "develop", "-H", "0.0.0.0"]
+CMD ["npm", "run", "develop"]
+
