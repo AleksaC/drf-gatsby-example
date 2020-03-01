@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 
 services:
   db:
@@ -8,28 +8,24 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
       - ./backend/sql/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
-    restart: on-failure
+    restart: unless-stopped
 
   backend:
-    build: backend
-    image: backend
-    volumes:
-      - ./backend:/app
+    <<: &backend
+      build: backend
+      image: backend
+      environment:
+        - DB_HOST=db
+      volumes:
+        - ./backend:/app
+      depends_on:
+        - db
     ports:
       - "3000:3000"
-    depends_on:
-      - db
-    restart: on-failure
 
   migration:
-    build: backend
-    image: backend
+    <<: *backend
     command: python manage.py migrate
-    volumes:
-      - ./backend:/app
-    depends_on:
-      - db
-      - backend
 
   frontend:
     build: frontend
