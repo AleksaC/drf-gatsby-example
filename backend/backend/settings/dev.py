@@ -10,7 +10,7 @@ ALLOWED_HOSTS = ["*"]
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
         "NAME": os.environ.get("DB_NAME", "gis"),
         "USER": os.environ.get("DB_USER", "aleksa"),
         "PASSWORD": os.environ.get("DB_PASSWORD", "projekat"),
