@@ -5,6 +5,7 @@ services:
     image: mdillon/postgis:10
     environment:
       - POSTGRES_HOST=db
+      - POSTGRES_PASSWORD=
     volumes:
       - db-data:/var/lib/postgresql/data
       - ./backend/sql/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql

@@ -2,15 +2,16 @@ FROM python:3.8-buster
 
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && apt-get install python3-gdal gdal-bin -y
+RUN apt-get update && apt-get install \
+    gdal-bin \
+    python3-gdal \
+    -y
 
-RUN mkdir /code
-
-WORKDIR /code
+WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
